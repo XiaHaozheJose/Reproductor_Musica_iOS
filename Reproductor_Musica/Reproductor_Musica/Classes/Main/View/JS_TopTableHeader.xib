@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="GillSans.ttc">
+            <string>GillSans-BoldItalic</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="JS_TopTableHeader" customModule="Reproductor_Musica" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="441" height="121"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DIU-LY-wUi">
+                    <rect key="frame" x="10" y="0.0" width="91.5" height="121"/>
+                    <fontDescription key="fontDescription" name="GillSans-BoldItalic" family="Gill Sans" pointSize="35"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ejM-jU-bnD">
+                    <rect key="frame" x="385" y="45" width="46" height="30"/>
+                    <state key="normal" title="Button">
+                        <color key="titleColor" red="1" green="0.1350314635" blue="0.1494821754" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="DIU-LY-wUi" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="ZhU-gE-Ibb"/>
+                <constraint firstItem="ejM-jU-bnD" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="cUs-bM-ASF"/>
+                <constraint firstItem="ejM-jU-bnD" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" constant="-10" id="j1r-sM-QE7"/>
+                <constraint firstItem="DIU-LY-wUi" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="ndm-mE-Q6Q"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="DIU-LY-wUi" secondAttribute="bottom" id="zd8-Ut-W1x"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="edit" destination="ejM-jU-bnD" id="1nx-t7-UlX"/>
+                <outlet property="title" destination="DIU-LY-wUi" id="rxD-2T-eE1"/>
+            </connections>
+            <point key="canvasLocation" x="66.5" y="-219.5"/>
+        </view>
+    </objects>
+</document>
