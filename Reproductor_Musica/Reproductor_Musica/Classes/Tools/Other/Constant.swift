@@ -4,7 +4,6 @@
 //
 //  Created by 浩哲 夏 on 2017/12/16.
 //  Copyright © 2017年 浩哲 夏. All rights reserved.
-//
 
 import UIKit
 
@@ -14,8 +13,13 @@ let tabSelecImage = [#imageLiteral(resourceName: "library_selected"),#imageLiter
 let kScreen = UIScreen.main.bounds
 let kScreenWidth = UIScreen.main.bounds.width
 let kScreenHeight = UIScreen.main.bounds.height
-let playBarHeight: CGFloat = 49
+let playBarHeight: CGFloat = 64
 let margin: CGFloat = 15
 let topTableRowHeight: CGFloat = 44
 let topTableRowCount: CGFloat = 4
-let topTableHeaderHeight: CGFloat = 100
+let topTableHeaderHeight: CGFloat = 64
+var sistemTopHeight: CGFloat = 64
+var sistemBottomHeight: CGFloat = 49
+var MUSIC = "music"
+var AUTOR = "autor"
+var FILEPATH = "filePath"

@@ -11,10 +11,15 @@ import UIKit
 fileprivate let identifier: String = "cell"
 fileprivate let menus = ["Local Music","Carpeta","ITunes","Dropbox"]
 
+protocol TopViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath,title: String)
+}
 
 class JS_TopView: UIView {
 
-   fileprivate lazy var tableView: UITableView = {
+    
+    var delegate: TopViewDelegate?
+    fileprivate lazy var tableView: UITableView = {
     let tableView = UITableView(frame: self.bounds)
     tableView.delegate = self
     tableView.dataSource = self
@@ -29,6 +34,7 @@ class JS_TopView: UIView {
         return header
     }()
     
+   
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,7 +65,7 @@ extension JS_TopView{
 
 extension JS_TopView: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("".documentDir())
+        delegate?.tableView(tableView, didSelectRowAt: indexPath,title: menus[indexPath.row])
     }
     
 }

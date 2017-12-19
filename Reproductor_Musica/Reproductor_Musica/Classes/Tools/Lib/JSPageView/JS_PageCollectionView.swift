@@ -1,5 +1,5 @@
 //
-//  JSPageCollectionView.swift
+//  JS_PageCollectionView.swift
 //  pageView
 //
 //  Created by 浩哲 夏 on 2017/4/14.
@@ -14,28 +14,28 @@
 import UIKit
 
 // MARK: - 数据源协议
-protocol JSPageCollectionViewDataSource:class {
+protocol JS_PageCollectionViewDataSource:class {
     //组
-    func numberOfSectionInPageCollectionView(_ pageCollectionView: JSPageCollectionView) -> Int
+    func numberOfSectionInPageCollectionView(_ pageCollectionView: JS_PageCollectionView) -> Int
     //每组的item
-    func pageCollectionView(_ pageCollectionView: JSPageCollectionView, numberOfItemsInSection section: Int) -> Int
+    func pageCollectionView(_ pageCollectionView: JS_PageCollectionView, numberOfItemsInSection section: Int) -> Int
     //Item样式
-    func pageCollectionView(_ pageCollectionView: JSPageCollectionView,_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    func pageCollectionView(_ pageCollectionView: JS_PageCollectionView,_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
 }
 
 
-class JSPageCollectionView: UIView {
+class JS_PageCollectionView: UIView {
     // MARK: - 属性
-    weak var dataSource : JSPageCollectionViewDataSource?
+    weak var dataSource : JS_PageCollectionViewDataSource?
     fileprivate var titles : [String]
-    fileprivate var style : JSPageStyle
+    fileprivate var style : JS_PageStyle
     fileprivate var collectionView : UICollectionView?
-    fileprivate var layout : JSPageFlowLayout
+    fileprivate var layout : JS_PageFlowLayout
     fileprivate var pageControl : UIPageControl?
     fileprivate var currentIndex = IndexPath(item: 0, section: 0)
-    fileprivate var titleView: JSTitleView?
+    fileprivate var titleView: JS_TitleView?
     // MARK: - 构造函数
-    init(frame: CGRect,titles: [String], style: JSPageStyle, layout: JSPageFlowLayout) {
+    init(frame: CGRect,titles: [String], style: JS_PageStyle, layout: JS_PageFlowLayout) {
         self.titles = titles
         self.style = style
         self.layout = layout
@@ -47,12 +47,12 @@ class JSPageCollectionView: UIView {
 }
 
 // MARK: - 创建UI
-extension JSPageCollectionView {
+extension JS_PageCollectionView {
     fileprivate func setupUI(){
         // 设置TitileView
         let titleY = style.isTitleInTop ? 0 : bounds.height - style.titleHeight
         let titleFrame = CGRect(x: 0, y: titleY, width: bounds.width, height: style.titleHeight)
-        let titleView = JSTitleView(frame: titleFrame, titles: titles, style: style)
+        let titleView = JS_TitleView(frame: titleFrame, titles: titles, style: style)
         titleView.delegate = self
         titleView.backgroundColor = UIColor.randomColor()
         self.titleView = titleView
@@ -82,7 +82,7 @@ extension JSPageCollectionView {
 
 
 // MARK: - 对外暴漏的方法
-extension JSPageCollectionView{
+extension JS_PageCollectionView{
     func register(cellClass: AnyClass?, ReuseIdentifier: String){
         collectionView?.register(cellClass, forCellWithReuseIdentifier: ReuseIdentifier)
     }
@@ -95,7 +95,7 @@ extension JSPageCollectionView{
 }
 
 // MARK: - 系统数据源方法
-extension JSPageCollectionView: UICollectionViewDataSource{
+extension JS_PageCollectionView: UICollectionViewDataSource{
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return dataSource?.numberOfSectionInPageCollectionView(self) ?? 0
     }
@@ -114,7 +114,7 @@ extension JSPageCollectionView: UICollectionViewDataSource{
 }
 
 // MARK: - 系统代理方法
-extension JSPageCollectionView: UICollectionViewDelegate{
+extension JS_PageCollectionView: UICollectionViewDelegate{
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
@@ -142,15 +142,15 @@ extension JSPageCollectionView: UICollectionViewDelegate{
 }
 
 // MARK: - TitleView代理
-extension JSPageCollectionView: JSTitleViewDelegate{
+extension JS_PageCollectionView: JS_TitleViewDelegate{
     
-    func titleView(titleView: JSTitleView, targetIndex: Int) {
+    func titleView(titleView: JS_TitleView, targetIndex: Int) {
         //获取对应组的IndexPath
         let indexPath = IndexPath(item: 0, section: targetIndex)
         collectionView?.scrollToItem(at: indexPath, at: .left, animated: false)
         renovateOffsetBug(targetIndex: indexPath.section)
         pageControl?.currentPage = ( indexPath.item) / (layout.cols * layout.rows)
-
+        
     }
     
     //修复偏移BUG
@@ -169,6 +169,7 @@ extension JSPageCollectionView: JSTitleViewDelegate{
     }
     
 }
+
 
 
 

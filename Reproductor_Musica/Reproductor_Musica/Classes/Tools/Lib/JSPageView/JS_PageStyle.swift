@@ -1,11 +1,11 @@
 //
-//  JSPageStyle.swift
+//  JS_PageStyle.swift
 //  pageView
 
 
 import UIKit
 
-struct JSPageStyle{
+struct JS_PageStyle{
     /*------------------标题属性样式-----------------------*/
     var titleHeight : CGFloat = 44 //TitleView 高度
     var titleNolmalColor : UIColor = UIColor.white  // Title标题普通颜色
@@ -35,3 +35,4 @@ struct JSPageStyle{
     var pageControlHeight : CGFloat = 20
     var isTitleInTop: Bool = true
 }
+

@@ -1,20 +1,20 @@
 //
-//  JSTitleView.swift
+//  JS_TitleView.swift
 //  pageView
 
 
 import UIKit
 
 // 协议
-protocol JSTitleViewDelegate : class {
-    func titleView(titleView:JSTitleView,targetIndex:Int)
+protocol JS_TitleViewDelegate : class {
+    func titleView(titleView:JS_TitleView,targetIndex:Int)
 }
 
-class JSTitleView: UIView {
+class JS_TitleView: UIView {
     // MARK: - 属性
-    weak var delegate : JSTitleViewDelegate?
+    weak var delegate : JS_TitleViewDelegate?
     fileprivate var titles : [String]
-    fileprivate var style : JSPageStyle
+    fileprivate var style : JS_PageStyle
     fileprivate var currentIndex = 0
     // 存放标题Label的数组
     fileprivate lazy  var labels : [UILabel] = [UILabel]()
@@ -45,17 +45,17 @@ class JSTitleView: UIView {
     }()
     // cover遮盖
     fileprivate lazy var coverView : UIView = {
-       let cover = UIView()
-       cover.backgroundColor = self.style.coverColor
+        let cover = UIView()
+        cover.backgroundColor = self.style.coverColor
         cover.alpha = self.style.coverAlpha
         cover.isUserInteractionEnabled = false
-       return cover
+        return cover
     }()
     
     /*-----------------------------分割线----------------------------- */
     
     // MARK: - 构造函数
-    init(frame: CGRect,titles:[String],style:JSPageStyle) {
+    init(frame: CGRect,titles:[String],style:JS_PageStyle) {
         self.titles = titles
         self.style = style
         super.init(frame: frame)
@@ -68,7 +68,7 @@ class JSTitleView: UIView {
 }
 
 // MARK: - 设置UI
-extension JSTitleView{
+extension JS_TitleView{
     fileprivate func setupUI(){
         //添加scrollView
         addSubview(scrollView)
@@ -83,7 +83,7 @@ extension JSTitleView{
     private func setupCover(){
         guard  let firstLabel = labels.first else { return }
         let coverW = style.isScrollEnable ? firstLabel.frame.width + style.coverPadding
-                                          : firstLabel.frame.width - style.coverPadding
+            : firstLabel.frame.width - style.coverPadding
         let coverH = style.coverHeight
         let coverX = firstLabel.frame.origin.x
         let coverY = (firstLabel.frame.height - style.coverHeight) * 0.5
@@ -115,7 +115,7 @@ extension JSTitleView{
                 style.titleSelectedColor:
                 style.titleNolmalColor
             titleLabel.font = style.titleFont
-
+            
             //添加titleLabel到scrollView
             scrollView.addSubview(titleLabel)
             //给Label添加手势
@@ -133,7 +133,7 @@ extension JSTitleView{
         for (i,label)in labels.enumerated(){
             //如果需要滚动
             if style.isScrollEnable  {
-                labelW = (label.text! as NSString).boundingRect(with: CGSize.init(width: CGFloat(MAXFLOAT), height: 0), options:.usesLineFragmentOrigin, attributes: [NSFontAttributeName : style.titleFont], context: nil).width
+                labelW = (label.text! as NSString).boundingRect(with: CGSize.init(width: CGFloat(MAXFLOAT), height: 0), options:.usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font : style.titleFont], context: nil).width
                 labelX = i == 0 ? style.titleMargin * 0.5 : (labels[i-1].frame.maxX) + style.titleMargin
                 //不需要滚动
             } else{ labelX = labelW * CGFloat(i) }
@@ -154,7 +154,7 @@ extension JSTitleView{
     }
 }
 // MARK: - 监听方法
-extension JSTitleView:UIGestureRecognizerDelegate{
+extension JS_TitleView:UIGestureRecognizerDelegate{
     @objc fileprivate func clickTitleLabel(tap:UITapGestureRecognizer){
         //校验是否点中
         guard let targetLabel = tap.view as? UILabel else { return }
@@ -165,7 +165,7 @@ extension JSTitleView:UIGestureRecognizerDelegate{
         delegate?.titleView(titleView: self, targetIndex: targetLabel.tag)
         
         justTitlePosition(targetLabel: targetLabel)
-      
+        
     }
     
     //调整点击Label的位置 处于Center
@@ -223,7 +223,7 @@ extension JSTitleView:UIGestureRecognizerDelegate{
 }
 
 // MARK: - 暴漏的通用方法
-extension JSTitleView{
+extension JS_TitleView{
     func titleView(targetIndex:Int){
         let targetLabel = labels[targetIndex]
         justTitlePosition(targetLabel: targetLabel)
@@ -232,9 +232,9 @@ extension JSTitleView{
 
 
 // MARK: - 滚动ContentView 代理
-extension JSTitleView : JSContentDelegate{
+extension JS_TitleView : JS_ContentDelegate{
     //滑动结束
-    func contentView(contentView: JSContentView, didEndScroll index: Int) {
+    func contentView(contentView: JS_ContentView, didEndScroll index: Int) {
         
         currentIndex = index
         let targetLabel = labels[index]
@@ -247,7 +247,7 @@ extension JSTitleView : JSContentDelegate{
     }
     
     //颜色渐变,bottomLine
-    func contentView(contentView: JSContentView, sourceIndex: Int, targetIndex: Int, progress: CGFloat) {
+    func contentView(contentView: JS_ContentView, sourceIndex: Int, targetIndex: Int, progress: CGFloat) {
         let targetLabel = labels[targetIndex]
         let sourceLabel = labels[sourceIndex]
         
@@ -283,4 +283,5 @@ extension JSTitleView : JSContentDelegate{
         
     }
 }
+
 

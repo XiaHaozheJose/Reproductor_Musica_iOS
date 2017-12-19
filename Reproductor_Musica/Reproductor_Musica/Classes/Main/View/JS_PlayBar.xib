@@ -13,11 +13,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="hwc-1g-AOp" customClass="JS_PlayBar" customModule="Reproductor_Musica" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <rect key="frame" x="0.0" y="0.0" width="585" height="123"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wx0-Bp-x3U">
-                    <rect key="frame" x="164.5" y="318.5" width="46" height="30"/>
+                    <rect key="frame" x="269.5" y="46.5" width="46" height="30"/>
                     <state key="normal" title="Button"/>
                 </button>
             </subviews>
@@ -25,8 +25,9 @@
                 <constraint firstItem="Wx0-Bp-x3U" firstAttribute="centerX" secondItem="hwc-1g-AOp" secondAttribute="centerX" id="bBm-rV-Rkq"/>
                 <constraint firstItem="Wx0-Bp-x3U" firstAttribute="centerY" secondItem="hwc-1g-AOp" secondAttribute="centerY" id="taS-KR-bWH"/>
             </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="tew-9g-hZm"/>
-            <point key="canvasLocation" x="168" y="-115"/>
+            <point key="canvasLocation" x="192" y="-326"/>
         </view>
     </objects>
 </document>

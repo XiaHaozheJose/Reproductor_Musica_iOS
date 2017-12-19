@@ -1,5 +1,5 @@
 //
-//  JSPageFlowLayout.swift
+//  JS_PageFlowLayout.swift
 //  pageView
 //
 //  Created by 浩哲 夏 on 2017/4/14.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class JSPageFlowLayout: UICollectionViewFlowLayout {
+class JS_PageFlowLayout: UICollectionViewFlowLayout {
     var cols: Int = 4
     var rows: Int = 2
     fileprivate lazy var attributes: [UICollectionViewLayoutAttributes] = []
@@ -18,7 +18,7 @@ class JSPageFlowLayout: UICollectionViewFlowLayout {
 }
 
 // MARK: - 布局
-extension JSPageFlowLayout{
+extension JS_PageFlowLayout{
     override func prepare() {
         super.prepare()
         guard let collectionView = self.collectionView else { return }
@@ -50,15 +50,16 @@ extension JSPageFlowLayout{
 }
 
 // MARK: - 返回布局
-extension JSPageFlowLayout{
+extension JS_PageFlowLayout{
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         return attributes
     }
 }
 
 // MARK: - 设置ContentSize
-extension JSPageFlowLayout{
+extension JS_PageFlowLayout{
     override var collectionViewContentSize: CGSize{
         return CGSize(width:ContentWidth, height:0)
     }
 }
+

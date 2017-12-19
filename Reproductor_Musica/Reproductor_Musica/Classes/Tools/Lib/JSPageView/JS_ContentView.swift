@@ -1,21 +1,21 @@
 //
-//  JSContentView.swift
+//  JS_ContentView.swift
 //  pageView
 
 
 import UIKit
 
-protocol JSContentDelegate:class {
-    func contentView(contentView : JSContentView , didEndScroll index : Int)
-    func contentView(contentView : JSContentView, sourceIndex : Int , targetIndex : Int ,progress : CGFloat)
+protocol JS_ContentDelegate:class {
+    func contentView(contentView : JS_ContentView , didEndScroll index : Int)
+    func contentView(contentView : JS_ContentView, sourceIndex : Int , targetIndex : Int ,progress : CGFloat)
 }
 
 private let kContentCell = "contentCell"
-class JSContentView: UIView {
+class JS_ContentView: UIView {
     // MARK: - 属性
     fileprivate var sourceIndex = 0
     fileprivate var targetIndex = 0
-    weak var delegate : JSContentDelegate?
+    weak var delegate : JS_ContentDelegate?
     fileprivate var startOffsetX : CGFloat = 0
     fileprivate var childsVC : [UIViewController]
     fileprivate var parentVC : UIViewController
@@ -33,6 +33,8 @@ class JSContentView: UIView {
         collection.isPagingEnabled = true
         collection.showsHorizontalScrollIndicator = false
         collection.bounces = false
+        collection.backgroundColor = .white
+//        collection.autoresizingMask = [.flexibleHeight,.flexibleWidth]
         return collection
     }()
     
@@ -48,22 +50,23 @@ class JSContentView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    
 }
 // MARK: - 设置UI
-extension JSContentView{
+extension JS_ContentView{
     fileprivate func setupUI(){
         for child in childsVC{
             parentVC.addChildViewController(child)
         }
         
-        //添加CollctionView
         addSubview(collectionView)
     }
 }
 
 // MARK: - 代理
-extension JSContentView:UICollectionViewDelegate{
+extension JS_ContentView:UICollectionViewDelegate{
+    
     //即将拖拽
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         isForbidDelegate = false
@@ -75,14 +78,15 @@ extension JSContentView:UICollectionViewDelegate{
         let contentOffsetX = scrollView.contentOffset.x
         if isForbidDelegate { return }
         guard contentOffsetX != startOffsetX  else { return }
-       
+        
         let temp = contentOffsetX / collectionWidth
         
         var progress : CGFloat = temp - floor(temp)
+        
         if contentOffsetX - startOffsetX >= 0 {//左滑
             sourceIndex = Int(contentOffsetX / collectionWidth)
             targetIndex = sourceIndex + 1
-           
+            
             if targetIndex >= childsVC.count {
                 targetIndex = childsVC.count - 1
             }
@@ -104,18 +108,20 @@ extension JSContentView:UICollectionViewDelegate{
     }
     //结束减速
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
         scrollViewDidEndScroll()
     }
     //结束拖拽
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-              let targetIndex = Int(floor(scrollView.contentOffset.x / bounds.size.width))
-        if scrollView.contentOffset.x == 0 || scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.bounds.width {
-            if self.targetIndex != targetIndex {
-                scrollViewDidEndScroll()
-            }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool){
+        if scrollView.contentOffset.x < 0{
+            return
         }
+            if !decelerate {
+            let targetIndex = Int(floor(scrollView.contentOffset.x / bounds.size.width))
+            if scrollView.contentOffset.x == 0 || scrollView.contentOffset.x == scrollView.contentSize.width - scrollView.bounds.width {
+                if self.targetIndex != targetIndex {
+                    scrollViewDidEndScroll()
+                }
+            }
         }
     }
     private func scrollViewDidEndScroll(){
@@ -126,12 +132,13 @@ extension JSContentView:UICollectionViewDelegate{
 }
 
 // MARK: - 数据源
-extension JSContentView:UICollectionViewDataSource{
+extension JS_ContentView:UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return childsVC.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+       
         //获取cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier:
             kContentCell, for: indexPath)
@@ -142,20 +149,23 @@ extension JSContentView:UICollectionViewDataSource{
         }
         //再添加新的
         let child = childsVC[indexPath.item]
+        child.view.frame = self.bounds
         cell.contentView.addSubview(child.view)
         return cell
     }
 }
 // MARK: - 点击title代理
-extension JSContentView:JSTitleViewDelegate{
-    func titleView(titleView: JSTitleView, targetIndex: Int) {
+extension JS_ContentView:JS_TitleViewDelegate{
+    func titleView(titleView: JS_TitleView, targetIndex: Int) {
         //禁止代理方法
         isForbidDelegate = true
         //切换CollectionItem
-       let index =  IndexPath(item: targetIndex, section: 0)
+        let index =  IndexPath(item: targetIndex, section: 0)
         collectionView.selectItem(at: index, animated: false, scrollPosition: UICollectionViewScrollPosition.right)
     }
 }
+
+
 
 
 

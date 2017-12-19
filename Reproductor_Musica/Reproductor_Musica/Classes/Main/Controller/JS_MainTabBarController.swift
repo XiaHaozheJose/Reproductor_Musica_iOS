@@ -27,18 +27,26 @@ class JS_MainTabBarController: UITabBarController {
         return bar
     }()
     
+    lazy var effectView: UIVisualEffectView = {
+        let blur = UIBlurEffect(style: .prominent)
+        let effectView = UIVisualEffectView(effect: blur)
+        return effectView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setChildViewController()
         setPlayerView()
+        sistemBottomHeight = self.tabBar.frame.height
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
   
 }
 
@@ -57,15 +65,13 @@ extension JS_MainTabBarController{
     func setPlayerView(){
         let tabBarHeight = self.tabBar.frame.size.height;
 
-        let blur = UIBlurEffect(style: .prominent)
-        let effectView = UIVisualEffectView(effect: blur)
+        
         effectView.frame = CGRect(x: 0, y: kScreenHeight - (tabBarHeight + playBarHeight), width: kScreenWidth, height: playBarHeight)
         toolBar.frame = effectView.bounds
-//        toolBar.backgroundColor = UIColor.white
         effectView.contentView.addSubview(toolBar)
         view.addSubview(effectView)
-        
-        
+        effectView.isHidden = true
     }
+    
     
 }

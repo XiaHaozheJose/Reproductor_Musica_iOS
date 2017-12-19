@@ -10,8 +10,23 @@ import UIKit
 
 class JS_LibraryCell: UICollectionViewCell {
 
+    
+    
+    @IBOutlet weak var music: UILabel!
+    @IBOutlet weak var autor: UILabel!
+    @IBOutlet weak var musicIcon: UIImageView!
+    var localMusic: JS_LocalMusic?{
+        didSet{
+            music.text = localMusic?.music
+            autor.text = localMusic?.autor
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        musicIcon.layer.cornerRadius = 20
+        musicIcon.layer.masksToBounds = true
         // Initialization code
     }
 

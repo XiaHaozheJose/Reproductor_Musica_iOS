@@ -19,7 +19,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="200" height="300"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="favorate_selected" translatesAutoresizingMaskIntoConstraints="NO" id="eWo-Bj-dQF">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="eWo-Bj-dQF">
                         <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MUSICA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pzx-Rs-Tlk">
@@ -50,10 +50,15 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="222" height="196"/>
+            <connections>
+                <outlet property="autor" destination="qkU-JT-9Tm" id="2Xe-vJ-g71"/>
+                <outlet property="music" destination="Pzx-Rs-Tlk" id="4hZ-P8-qMW"/>
+                <outlet property="musicIcon" destination="eWo-Bj-dQF" id="CgM-9D-8dz"/>
+            </connections>
             <point key="canvasLocation" x="176" y="-24"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="favorate_selected" width="24" height="22"/>
+        <image name="placeholder" width="512" height="512"/>
     </resources>
 </document>
