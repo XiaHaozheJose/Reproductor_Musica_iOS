@@ -16,7 +16,9 @@ class JS_MainNavigationController: UINavigationController,UIGestureRecognizerDel
     override func viewDidLoad() {
         super.viewDidLoad()
          sistemTopHeight = self.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height
-  
+        self.navigationBar.setBackgroundImage(#imageLiteral(resourceName: "navibackgroud"), for: .default)
+        self.navigationBar.shadowImage = UIImage()
+
 //               //实现全局滑动PoP 第二中方法
 //               let pan = UIPanGestureRecognizer.init(target:interactivePopGestureRecognizer?.delegate, action:"handleNavigationTransition:")
 //                view.addGestureRecognizer(pan)

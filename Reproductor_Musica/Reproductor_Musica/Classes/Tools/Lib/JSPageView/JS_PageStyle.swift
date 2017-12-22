@@ -15,7 +15,7 @@ struct JS_PageStyle{
     var titleMargin : CGFloat = 20 // title外边距
     
     /*------------------底部Line属性样式-----------------------*/
-    var isShowBottomLine : Bool = true // 是否显示底部线
+    var isShowBottomLine : Bool = false // 是否显示底部线
     var bottomLineColor : UIColor = UIColor.orange // 底部line颜色
     var bottomLineHeight : CGFloat = 2 // 底部Line高度
     

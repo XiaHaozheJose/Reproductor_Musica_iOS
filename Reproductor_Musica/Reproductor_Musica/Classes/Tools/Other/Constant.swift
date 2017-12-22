@@ -23,3 +23,7 @@ var sistemBottomHeight: CGFloat = 49
 var MUSIC = "music"
 var AUTOR = "autor"
 var FILEPATH = "filePath"
+let kPlayEnd = NSNotification.Name.AVPlayerItemDidPlayToEndTime
+let kPlayInterrupt = NSNotification.Name.AVPlayerItemPlaybackStalled
+
+

@@ -39,13 +39,13 @@ extension JS_PageView{
         //TitleView
         let titleFrame = CGRect(x: 0, y: 0, width:bounds.width, height: style.titleHeight)
         let titleView = JS_TitleView(frame: titleFrame, titles: titles, style: style)
-        titleView.backgroundColor = UIColor.randomColor()
+        titleView.layer.contents = #imageLiteral(resourceName: "titlebackground").cgImage
         addSubview(titleView)
         
         //ContentView
         let contentFrame = CGRect(x: 0, y: titleFrame.maxY, width: bounds.width, height: bounds.height - style.titleHeight)
         let contentView = JS_ContentView(frame: contentFrame, childController: childController, parentController: parentController)
-        contentView.backgroundColor = UIColor.randomColor()
+//        contentView.backgroundColor = UIColor.randomColor()
         addSubview(contentView)
         
         //交互

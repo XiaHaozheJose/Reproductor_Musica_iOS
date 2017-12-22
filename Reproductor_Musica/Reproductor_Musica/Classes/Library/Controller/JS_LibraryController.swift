@@ -94,6 +94,8 @@ class JS_LibraryController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         view.isHidden = false
+    }
+    override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     

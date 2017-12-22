@@ -6,21 +6,72 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="49" id="KGk-i7-Jjw" customClass="JS_LocalLetterCell" customModule="Reproductor_Musica" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="405" height="49"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="JS_LocalLetterCell" customModule="Reproductor_Musica" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="405" height="48.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="localplaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="a6C-37-qff">
+                        <rect key="frame" x="5" y="0.0" width="63.5" height="63.5"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="a6C-37-qff" secondAttribute="height" multiplier="1:1" id="g0Z-so-qo6"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mayores" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Swn-6H-ihn">
+                        <rect key="frame" x="88.5" y="10" width="162.5" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="becky G, Bad Bunny" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xvd-82-9Yo">
+                        <rect key="frame" x="88.5" y="36" width="162.5" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z5g-Ox-GVK">
+                        <rect key="frame" x="261" y="5" width="49" height="53.5"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="49" id="tU2-zn-Ij2"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Z5g-Ox-GVK" firstAttribute="leading" secondItem="xvd-82-9Yo" secondAttribute="trailing" constant="10" id="2DS-by-zsa"/>
+                    <constraint firstItem="Z5g-Ox-GVK" firstAttribute="leading" secondItem="Swn-6H-ihn" secondAttribute="trailing" constant="10" id="Er0-Cb-s9c"/>
+                    <constraint firstAttribute="trailing" secondItem="Z5g-Ox-GVK" secondAttribute="trailing" constant="10" id="NG5-QF-cCN"/>
+                    <constraint firstItem="a6C-37-qff" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="Nv9-Sh-SMY"/>
+                    <constraint firstAttribute="bottom" secondItem="Z5g-Ox-GVK" secondAttribute="bottom" constant="5" id="Ppk-O5-q0v"/>
+                    <constraint firstItem="xvd-82-9Yo" firstAttribute="leading" secondItem="Swn-6H-ihn" secondAttribute="leading" id="R7V-zP-RoC"/>
+                    <constraint firstItem="Swn-6H-ihn" firstAttribute="leading" secondItem="a6C-37-qff" secondAttribute="trailing" constant="20" id="hmx-Wa-jja"/>
+                    <constraint firstItem="a6C-37-qff" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="n8j-kA-yXH"/>
+                    <constraint firstItem="Z5g-Ox-GVK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="oxn-cS-4we"/>
+                    <constraint firstItem="Swn-6H-ihn" firstAttribute="top" secondItem="a6C-37-qff" secondAttribute="top" constant="10" id="qc3-6K-KX4"/>
+                    <constraint firstItem="xvd-82-9Yo" firstAttribute="top" secondItem="Swn-6H-ihn" secondAttribute="bottom" constant="5" id="sDi-HW-1V4"/>
+                    <constraint firstItem="a6C-37-qff" firstAttribute="height" secondItem="H2p-sc-9uM" secondAttribute="height" id="za8-d8-edq"/>
+                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
-            <point key="canvasLocation" x="14.5" y="-53"/>
+            <connections>
+                <outlet property="autorName" destination="xvd-82-9Yo" id="nhx-mQ-Ez0"/>
+                <outlet property="musicAnimator" destination="Z5g-Ox-GVK" id="YvE-bR-LEN"/>
+                <outlet property="musicImage" destination="a6C-37-qff" id="vcM-VN-Xtm"/>
+                <outlet property="musicName" destination="Swn-6H-ihn" id="iFw-SX-dKM"/>
+            </connections>
+            <point key="canvasLocation" x="81" y="-10"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="localplaceholder" width="300" height="300"/>
+    </resources>
 </document>

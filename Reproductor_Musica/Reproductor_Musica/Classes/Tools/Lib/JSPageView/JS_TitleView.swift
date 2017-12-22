@@ -10,6 +10,7 @@ protocol JS_TitleViewDelegate : class {
     func titleView(titleView:JS_TitleView,targetIndex:Int)
 }
 
+fileprivate let kScreenW = UIScreen.main.bounds.width
 class JS_TitleView: UIView {
     // MARK: - 属性
     weak var delegate : JS_TitleViewDelegate?
@@ -85,7 +86,7 @@ extension JS_TitleView{
         let coverW = style.isScrollEnable ? firstLabel.frame.width + style.coverPadding
             : firstLabel.frame.width - style.coverPadding
         let coverH = style.coverHeight
-        let coverX = firstLabel.frame.origin.x
+        let coverX = style.isScrollEnable ? firstLabel.frame.origin.x : 0 + style.coverPadding
         let coverY = (firstLabel.frame.height - style.coverHeight) * 0.5
         coverView.frame = CGRect(x: coverX, y: coverY, width: coverW, height: coverH)
         coverView.center = labels.first!.center

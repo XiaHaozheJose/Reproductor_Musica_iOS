@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,6 +22,9 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="eWo-Bj-dQF">
                         <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="eWo-Bj-dQF" secondAttribute="height" multiplier="4:4" id="aF2-ve-1E0"/>
+                        </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MUSICA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pzx-Rs-Tlk">
                         <rect key="frame" x="5" y="210" width="195" height="21"/>
@@ -29,7 +33,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CANTO" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qkU-JT-9Tm">
-                        <rect key="frame" x="5" y="236" width="195" height="19.5"/>
+                        <rect key="frame" x="5" y="236" width="195" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -37,15 +41,14 @@
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="Pzx-Rs-Tlk" firstAttribute="top" secondItem="eWo-Bj-dQF" secondAttribute="bottom" constant="10" id="1hB-XB-dCy"/>
                 <constraint firstItem="qkU-JT-9Tm" firstAttribute="top" secondItem="Pzx-Rs-Tlk" secondAttribute="bottom" constant="5" id="1it-qG-gUy"/>
-                <constraint firstItem="eWo-Bj-dQF" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="4w1-q0-REJ"/>
                 <constraint firstItem="Pzx-Rs-Tlk" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="8od-ul-t4M"/>
-                <constraint firstAttribute="bottom" secondItem="eWo-Bj-dQF" secondAttribute="bottom" constant="100" id="C1c-6C-WhH"/>
-                <constraint firstItem="eWo-Bj-dQF" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="DWw-nB-feR"/>
                 <constraint firstAttribute="trailing" secondItem="qkU-JT-9Tm" secondAttribute="trailing" id="JaP-y2-ctT"/>
-                <constraint firstAttribute="trailing" secondItem="eWo-Bj-dQF" secondAttribute="trailing" id="VzR-7j-PsT"/>
+                <constraint firstItem="eWo-Bj-dQF" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Lgu-ZV-m0y"/>
+                <constraint firstAttribute="trailing" secondItem="eWo-Bj-dQF" secondAttribute="trailing" id="UAe-UK-16O"/>
+                <constraint firstItem="eWo-Bj-dQF" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="XqT-d9-JJY"/>
                 <constraint firstItem="qkU-JT-9Tm" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="iPM-pV-bX6"/>
-                <constraint firstItem="Pzx-Rs-Tlk" firstAttribute="top" secondItem="eWo-Bj-dQF" secondAttribute="bottom" constant="10" id="jb6-ze-Vgr"/>
                 <constraint firstAttribute="trailing" secondItem="Pzx-Rs-Tlk" secondAttribute="trailing" id="nNZ-pz-0iK"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -59,6 +62,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="placeholder" width="512" height="512"/>
+        <image name="placeholder" width="2000" height="2002"/>
     </resources>
 </document>

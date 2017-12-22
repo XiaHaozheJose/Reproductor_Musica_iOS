@@ -40,13 +40,13 @@ extension JS_LocalViewController{
     
     func setBaseView(){
         // must be Set False
-        self.automaticallyAdjustsScrollViewInsets = false
+//        self.automaticallyAdjustsScrollViewInsets = false
         var style = JS_PageStyle()
-        style.isShowBottomLine = true
         style.isNeedScale = true
+        style.isShowBottomLine = true
         style.titleSelectedColor = .red
-        let pageFrame = CGRect(x: 0, y: sistemTopHeight, width: kScreenWidth, height: kScreenHeight - sistemTopHeight - sistemBottomHeight)
-        
+        style.bottomLineColor = .red
+        let pageFrame = CGRect(x: 0, y: 0, width: kScreenWidth, height: kScreenHeight - sistemTopHeight)
         let pageView = JS_PageView(frame: pageFrame, titles: titles, style: style, childController: childVC, parentController: self)
         view.addSubview(pageView)
     }
