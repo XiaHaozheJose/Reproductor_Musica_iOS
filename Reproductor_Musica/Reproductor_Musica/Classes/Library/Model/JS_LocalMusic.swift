@@ -8,11 +8,23 @@
 
 import UIKit
 
-class JS_LocalMusic: NSObject {
-
-   @objc var music: String = ""
-   @objc var autor: String = ""
-   @objc var filePath: String = ""
+class JS_LocalMusic: NSObject,NSCoding {
+    
+    struct PropertyKey {
+        static let music = "music"
+        static let autor = "autor"
+        static let filePath = "filePath"
+        static let existImage = "image"
+    }
+    
+    
+    
+    
+    @objc var music: String = ""
+    @objc var autor: String = ""
+    @objc var filePath: String = ""
+    @objc var existImage: Bool = false
+    
     
     
     init(dict:  [String: AnyObject]) {
@@ -21,6 +33,21 @@ class JS_LocalMusic: NSObject {
     }
     
     override func setValue(_ value: Any?, forUndefinedKey key: String) {
+    }
+    
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(music, forKey: PropertyKey.music)
+        aCoder.encode(autor, forKey: PropertyKey.autor)
+        aCoder.encode(filePath, forKey: PropertyKey.filePath)
+        aCoder.encode(existImage,forKey:PropertyKey.existImage)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        music = aDecoder.decodeObject(forKey: PropertyKey.music) as! String
+        autor = aDecoder.decodeObject(forKey: PropertyKey.autor) as! String
+        filePath = aDecoder.decodeObject(forKey: PropertyKey.filePath) as! String
+        existImage = aDecoder.decodeBool(forKey: PropertyKey.existImage)
     }
     
 }

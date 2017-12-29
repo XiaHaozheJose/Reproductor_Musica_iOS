@@ -62,6 +62,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="placeholder" width="2000" height="2002"/>
+        <image name="placeholder" width="75" height="75"/>
     </resources>
 </document>

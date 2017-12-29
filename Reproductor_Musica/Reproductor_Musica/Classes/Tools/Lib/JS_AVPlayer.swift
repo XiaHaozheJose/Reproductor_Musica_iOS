@@ -12,13 +12,13 @@ import UIKit
 
 /// Protocol Optional
 @objc protocol JS_AudioPlayerDelegate: NSObjectProtocol{
-    @objc optional func playedEnd(currentUrl: URL?, currentPlayerItem: AVPlayerItem?,callBack: ((_ index: Int)->()))
+    @objc optional func playedEnd(currentUrl: URL?, currentPlayerItem: AVPlayerItem?,index:Int)
     @objc optional func getLoadingSize(loadSize: Float)
     @objc optional func getProgress(progress:Float,currentTime:String,totalTime:String,status:AudioStatus)
     @objc optional func audioPlayerState(isPlaying: Bool)
+    @objc optional func didChangeMusic(music: JS_LocalMusic?)
+    
 }
-
-
 
 fileprivate let kStatus = "status"
 fileprivate let kPlaybackLikelyToKeepUp = "playbackLikelyToKeepUp"
@@ -39,6 +39,9 @@ class JS_AVPlayer: NSObject {
     static let shared = JS_AVPlayer()
     private override init(){}
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     fileprivate var player: AVPlayer?            // Instance AVPlayer
     fileprivate(set) var isMuted: Bool = false   // Sound OFF
@@ -52,24 +55,30 @@ class JS_AVPlayer: NSObject {
     weak var delegate: JS_AudioPlayerDelegate?   // Protocolo Custom For JS_AudioPlayer
     fileprivate var timeObserver: Any?           // Observer Time
     fileprivate var items: [URL] = [URL]()       // UrlItems For AVPlayer
+    fileprivate var localMusics: [JS_LocalMusic]?
     fileprivate var callBack: ((_ index: Int)->())? // Clousure CallBack
+    
+    
     
     /// fileItems
     var musicItems:[String]?{
         didSet{
+            items.removeAll()
             for file in musicItems!{
                 items.append(URL(fileURLWithPath: file))
             }}}
     
     var indexWithMusic: Int = 0
     
-    func startPlay(item: URL,index: Int,callBack:((_ index: Int)->())?){
+    func startPlay(item: URL,index: Int,localMusics: [JS_LocalMusic], callBack:((_ index: Int)->())?){
+        self.localMusics = localMusics
         self.indexWithMusic = index
         self.currentUrl = item
         self.callBack = callBack
         playerWithItem(url: item)
     }
     fileprivate func playerWithItem(url: URL){
+        
         self.currentUrl = url
         let urlAsset = player?.currentItem?.asset as? AVURLAsset
         if let url = urlAsset?.url{
@@ -84,17 +93,16 @@ class JS_AVPlayer: NSObject {
         
         let asset = AVURLAsset(url: url)
         if player?.currentItem != nil {
-            // 删除Observer
+            // Remove Observer 
             removeObserver()
+            if timeObserver != nil { removeTimeObserver() }
         }
         
         let playItem = AVPlayerItem(asset: asset)
         playItem.addObserver(self, forKeyPath: kStatus, options: .new, context: nil)
         playItem.addObserver(self, forKeyPath: kPlaybackLikelyToKeepUp, options: .new, context: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(playEnd), name: kPlayEnd, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playIterrupt), name: kPlayInterrupt, object: nil)
-        
         self.player = AVPlayer(playerItem: playItem)
     }
     
@@ -220,8 +228,13 @@ extension JS_AVPlayer{
     fileprivate func playWithIndex(index: Int){
         playerWithItem(url: items[index])
         callBack?(index)
+        if delegate?.responds(to: #selector(delegate?.playedEnd(currentUrl:currentPlayerItem:index:))) == true{
+            delegate?.playedEnd!(currentUrl: currentUrl, currentPlayerItem: player?.currentItem, index: index)
+        }
+        if delegate?.responds(to: #selector(delegate?.didChangeMusic(music:))) == true{
+            delegate?.didChangeMusic?(music: self.localMusics?[index])
+        }
     }
-    
     
    @objc fileprivate func playEnd(){
         indexWithMusic += 1
@@ -262,22 +275,12 @@ extension JS_AVPlayer{
                     if self.status == .AudioStatePause{
                         self.resumen()
                     }
-                }else{}
+                }else{ JSLog("userPause")}
             }else{
                 JSLog("loading")
                 self.status = .AudioStateLoading
             
         }}
-//        else if keyPath == "loadedTimeRanges" {
-//            let loadedTimeRanges = player?.currentItem?.loadedTimeRanges
-//            let duration = CMTimeGetSeconds((loadedTimeRanges?.first)!.timeRangeValue.duration)
-//            let dataSize = Float(duration) / Float (self.totalTimeInt)
-//            if let isResponse = (self.delegate?.responds(to: #selector(self.delegate?.getLoadingSize(loadSize:)))){
-//                if isResponse == true{
-//                    self.delegate?.getLoadingSize!(loadSize: dataSize)
-//                }
-//            }
-//        }
     }
     
     func addTimeObserver(){

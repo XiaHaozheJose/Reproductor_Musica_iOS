@@ -9,16 +9,17 @@
 import UIKit
 
 fileprivate let identifier: String = "cell"
-fileprivate let menus = ["Local Music","Carpeta","ITunes","Dropbox"]
 
-protocol TopViewDelegate {
+@objc protocol TopViewDelegate: NSObjectProtocol{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath,title: String)
+    @objc optional func tableviewHeaderDidSelectes(sender: UIButton)
 }
 
 class JS_TopView: UIView {
-
     
-    var delegate: TopViewDelegate?
+    fileprivate var menus = [""]
+    var isHeader = false
+    weak var delegate: TopViewDelegate?
     fileprivate lazy var tableView: UITableView = {
     let tableView = UITableView(frame: self.bounds)
     tableView.delegate = self
@@ -36,16 +37,16 @@ class JS_TopView: UIView {
     
    
     
-    override init(frame: CGRect) {
+    init(frame: CGRect,menus: [String],withHeader: Bool) {
         super.init(frame: frame)
+        self.menus = menus
+        self.isHeader = withHeader
         setTopTableView()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
 }
 
@@ -54,13 +55,21 @@ class JS_TopView: UIView {
 extension JS_TopView{
     fileprivate func setTopTableView(){
         self.addSubview(tableView)
-        tableView.tableHeaderView = topHeader
+        if isHeader {
+            tableView.tableHeaderView = topHeader
+        }
+        topHeader.callBack = {(sender: UIButton) in
+            if self.delegate?.responds(to: #selector(self.delegate?.tableviewHeaderDidSelectes(sender:))) == true {
+                self.delegate?.tableviewHeaderDidSelectes!(sender: sender)
+            }
+        }
     }
     
-    func setTopTitle(Title: String, Edit: String){
+   open func setTopTitle(Title: String, Edit: String){
         topHeader.title.text = Title
         topHeader.edit.setTitle(Edit, for: .normal)
     }
+    
 }
 
 extension JS_TopView: UITableViewDelegate{
@@ -79,6 +88,7 @@ extension JS_TopView: UITableViewDataSource{
         var cell = tableView.dequeueReusableCell(withIdentifier: identifier)
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: identifier)
+            cell?.textLabel?.textColor = .red
         }
         cell?.accessoryType = .disclosureIndicator
         cell?.textLabel?.text = menus[indexPath.row]

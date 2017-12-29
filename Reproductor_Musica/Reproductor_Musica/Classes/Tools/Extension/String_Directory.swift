@@ -24,4 +24,6 @@ extension String{
         let path = NSTemporaryDirectory()
         return (path.appending("/\(self)"))
     }
+    
+    
 }

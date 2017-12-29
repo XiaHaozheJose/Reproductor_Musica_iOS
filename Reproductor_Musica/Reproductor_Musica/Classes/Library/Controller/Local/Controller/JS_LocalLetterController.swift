@@ -10,32 +10,25 @@ import UIKit
 import  AVFoundation
 fileprivate let identifier = "letterCell"
 class JS_LocalLetterController: UITableViewController {
-
+    
+    
+    fileprivate var isLoaded: Bool = false
+    
     fileprivate var localMusics: [JS_LocalMusic]?{
         didSet{
             tableView.reloadData()
-            var items: [String] = [String]()
-            for file in localMusics!{
-                items.append(file.filePath)
-            }
-            player.musicItems = items
         }
     }
     fileprivate var previousCell: JS_LocalLetterCell?
-
-    fileprivate var mainTabBarController: JS_MainTabBarController!
     
-    lazy var player: JS_AVPlayer = {
+    fileprivate lazy var player: JS_AVPlayer = {
         let play = JS_AVPlayer.shared
         play.delegate = self
         return play
     }()
     
-    fileprivate var isCallBack: Bool = false
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-       mainTabBarController = self.tabBarController.customMirror.children.first?.value as! JS_MainTabBarController
         
         //添加CollctionView
         if #available(iOS 11.0, *) {
@@ -44,14 +37,26 @@ class JS_LocalLetterController: UITableViewController {
             self.automaticallyAdjustsScrollViewInsets = false
         }
         inicialTableView()
-        let manager = JS_FileManager.shared
-            manager.getAllSongs(directoryPath: "".documentDir()) { (localMusics) in
-            self.localMusics = localMusics
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(isClickedMusic), name: notificationClickedMusic, object: nil)
+        
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        getData()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        isLoaded = false
+    }
     
+   @objc private func isClickedMusic(){
+    if previousCell != nil {
+        previousCell?.removeAnimation()
+    }}
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 
@@ -64,6 +69,13 @@ extension JS_LocalLetterController{
         tableView.backgroundView = imageView
         tableView.separatorStyle = .none
         tableView.register(UINib.init(nibName: "JS_LocalLetterCell", bundle: nil), forCellReuseIdentifier: identifier)
+    }
+    
+    fileprivate func getData(){
+        let manager = JS_FileManager.shared
+        manager.getAllSongs(directoryPath: "".documentDir()) { (localMusics) in
+            self.localMusics = localMusics
+        }
     }
 }
 
@@ -92,16 +104,21 @@ extension JS_LocalLetterController{
         
         let cell = tableView.cellForRow(at: indexPath) as! JS_LocalLetterCell
         guard let model = localMusics?[indexPath.row] else {return}
-        
+        isMusiciTunes = false
         gestionCellAnimation(cell: cell)
         gestionPlayBar(model: model)
-       
-        player.startPlay(item: URL(fileURLWithPath: model.filePath), index: indexPath.row) { [weak self] (row: Int) in
+        addHistoryMusics(objet: model)
+        player.startPlay(item: URL(fileURLWithPath: model.filePath), index: indexPath.row, localMusics: localMusics!) { [weak self] (row: Int) in
             let cell = tableView.cellForRow(at: IndexPath.init(row: row, section: 0)) as! JS_LocalLetterCell
             guard let model = self?.localMusics?[row] else {return}
             self?.gestionCellAnimation(cell: cell)
             self?.gestionPlayBar(model: model)
+            self?.addHistoryMusics(objet: model)
         }
+        if !isLoaded {
+            loadMusicToPlayer()
+        }
+        
         
     }
     
@@ -114,8 +131,31 @@ extension JS_LocalLetterController{
     }
     
     private func gestionPlayBar(model: JS_LocalMusic){
-        mainTabBarController.playTool.localMusic = model
-        mainTabBarController.isHidden = false
+        JS_LibraryController.mainTabBarController.playTool.localMusic = model
+        JS_LibraryController.mainTabBarController.isHidden = false
+    }
+    
+    private func addHistoryMusics(objet: JS_LocalMusic){
+        for music in historyMusics{
+            if music.filePath == objet.filePath{
+                return
+            }
+        }
+
+        historyMusics.insert(objet, at: 0)
+        if historyMusics.count > 10 {
+            historyMusics.removeLast()
+        }
+        UserDefaults.standard.setValue(NSKeyedArchiver.archivedData(withRootObject: historyMusics), forKeyPath: khistoryMusic)
+    }
+    
+    private func loadMusicToPlayer(){
+        var items: [String] = [String]()
+        for file in localMusics!{
+            items.append(file.filePath)
+        }
+        player.musicItems = items
+        isLoaded = true
     }
 }
 

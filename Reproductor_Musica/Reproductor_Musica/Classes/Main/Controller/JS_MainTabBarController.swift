@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import DeckTransition
 class JS_MainTabBarController: UITabBarController {
     
     override func loadView() {
@@ -32,13 +32,13 @@ class JS_MainTabBarController: UITabBarController {
         return effectView
     }()
     
+    fileprivate lazy var transitionBackground: UIColor = {
+        let color = UIColor.init(patternImage: #imageLiteral(resourceName: "iosBackground"))
+        return color
+    }()
     
-    var localMusicas: [JS_LocalMusic]?{
-        didSet{
-            
-        }
-    }
     var playTool: JS_PlayBar!
+    
     var isHidden: Bool?{
         didSet{
             effectView.isHidden = isHidden!
@@ -49,6 +49,7 @@ class JS_MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setChildViewController()
+        self.view.backgroundColor = transitionBackground
         setPlayerView()
         sistemBottomHeight = self.tabBar.frame.height
     }
@@ -80,6 +81,20 @@ extension JS_MainTabBarController{
         self.playTool = playBar
         view.addSubview(effectView)
         effectView.isHidden = true
+        
+        playBar.callback = { (musicView: UIViewController) in
+            self.present(musicView, animated: true) {
+                if let transition = UIApplication.shared.keyWindow?.subviews[1]{
+                    if let subTransition = transition.subviews.first{
+                        subTransition.backgroundColor = self.transitionBackground
+                    }
+                }
+            }
+        }
     }
+    
+    
+    
+    
     
 }

@@ -11,12 +11,20 @@ import UIKit
 class JS_TopTableHeader: UIView {
 
     @IBOutlet weak var title: UILabel!
-    
     @IBOutlet weak var edit: UIButton!
+    
+    var callBack: (( _ button: UIButton)->())?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         print("load topHeader")
     }
+    
+    @IBAction func clickButton(_ sender: UIButton) {
+        callBack?(sender)
+    }
+    
+    
+    
 
 }

@@ -16,14 +16,19 @@ let kScreenHeight = UIScreen.main.bounds.height
 let playBarHeight: CGFloat = 64
 let margin: CGFloat = 15
 let topTableRowHeight: CGFloat = 44
-let topTableRowCount: CGFloat = 4
+let topTableRowCount: CGFloat = 3
 let topTableHeaderHeight: CGFloat = 64
 var sistemTopHeight: CGFloat = 64
 var sistemBottomHeight: CGFloat = 49
-var MUSIC = "music"
-var AUTOR = "autor"
-var FILEPATH = "filePath"
+let MUSIC = "music"
+let AUTOR = "autor"
+let FILEPATH = "filePath"
+let ExistImage = "existImage"
 let kPlayEnd = NSNotification.Name.AVPlayerItemDidPlayToEndTime
 let kPlayInterrupt = NSNotification.Name.AVPlayerItemPlaybackStalled
-
-
+let kStatusBarHeight = UIApplication.shared.statusBarFrame.height
+let khistoryMusic = "history"
+var historyMusics: [JS_LocalMusic] = [JS_LocalMusic]()
+let notificationClickedMusic = Notification.Name(rawValue: "notificationClickedMusic")
+let notificationItunesClick = Notification.Name(rawValue: "notificationItunesClick")
+var isMusiciTunes: Bool = false

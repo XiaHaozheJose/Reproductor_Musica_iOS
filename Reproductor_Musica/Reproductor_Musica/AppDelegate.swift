@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import AVFoundation
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -19,9 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = UIColor.red
         
         self.window = UIWindow(frame: kScreen)
-        self.window?.backgroundColor = .white
         let tabBar = JS_MainTabBarController()
         window?.rootViewController = tabBar
+        let sesstion = AVAudioSession.sharedInstance()
+        try? sesstion.setCategory(AVAudioSessionCategoryPlayback)
+        try? sesstion.setActive(true)
         window?.makeKeyAndVisible()
         
 

@@ -32,6 +32,9 @@
                     <state key="normal" title="Button">
                         <color key="titleColor" red="1" green="0.1350314635" blue="0.1494821754" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
+                    <connections>
+                        <action selector="clickButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="eg9-WE-4bB"/>
+                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

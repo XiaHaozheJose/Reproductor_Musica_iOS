@@ -17,16 +17,24 @@ fileprivate let itemHeight: CGFloat = itemWidth * 4.5 / 3
 fileprivate let headerHeight: CGFloat = 35
 
 class JS_LibraryController: UIViewController{
-
-
+    
+    
+    
+    
+    static var mainTabBarController: JS_MainTabBarController!
+    
+    fileprivate var isLoaded: Bool = false
     fileprivate var flowLayout: UICollectionViewFlowLayout?
+    
+    /// music datas
     fileprivate var localMusics: [JS_LocalMusic]?{
         didSet{
             collection.reloadData()
         }
     }
 
-    lazy var collection: UICollectionView = {
+    //CollectionView
+    fileprivate lazy var collection: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         self.flowLayout = flowLayout
 
@@ -38,7 +46,6 @@ class JS_LibraryController: UIViewController{
         flowLayout.minimumInteritemSpacing = margin
         flowLayout.headerReferenceSize = CGSize(width: kScreenWidth, height: headerHeight)
         flowLayout.sectionInset = UIEdgeInsetsMake(margin, margin, 0, margin)
-        
         flowLayout.scrollDirection = .vertical
         
         /*
@@ -63,32 +70,22 @@ class JS_LibraryController: UIViewController{
         return vc
     }()
     
-   
     fileprivate var topView: JS_TopView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        JS_LibraryController.mainTabBarController = self.tabBarController.customMirror.children.first?.value as! JS_MainTabBarController
+        
         self.view.backgroundColor = .white
         setCollectionView()
-        
-//        let mirror =  self.tabBarController.customMirror
-//        let mianTab =  mirror.children.first?.value as! JS_MainTabBarController
-
-        
-        let  filemanager = JS_FileManager.shared
-        filemanager.getAllSongs(directoryPath: "".documentDir()) { (localMusics) in
-            self.localMusics = localMusics
-        }
     }
     
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         view.isHidden = true
     }
     
@@ -97,6 +94,7 @@ class JS_LibraryController: UIViewController{
     }
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
+        localMusics = getHistoryMusics()
     }
     
 }
@@ -105,34 +103,74 @@ class JS_LibraryController: UIViewController{
 // MARK: - UI
 extension JS_LibraryController{
   
-    func setCollectionView(){
+    fileprivate func setCollectionView(){
         collection.contentInset.top = height + margin
         view.addSubview(collection)
-        topView = JS_TopView(frame: CGRect(x: 0, y: -( height + margin), width: collection.bounds.width, height:height))
+        let topFrame = CGRect(x: 0, y: -( height + margin), width: collection.bounds.width, height:height)
+        topView = JS_TopView(frame: topFrame, menus: ["Local Music","iTunes","Dropbox"],withHeader: true)
         topView.delegate = self
         collection.addSubview(topView)
         topView.setTopTitle(Title: "Library", Edit: "Edit")
     }
-}
-
-
-// MARK: - Ligico
-extension JS_LocalViewController{
-    func getSonsWithDocument(){
+    
+    fileprivate func getHistoryMusics()->[JS_LocalMusic]{
+        let data = UserDefaults.standard.value(forKey: khistoryMusic) as? Data
+        
+        if let musicData = data {
+            let musicArray = NSKeyedUnarchiver.unarchiveObject(with: musicData) as? [JS_LocalMusic]
+            
+            if let musics = musicArray {
+                return musics
+            }
+        }
+        return [JS_LocalMusic]()
     }
 }
 
+
+// MARK: - Logico
+extension JS_LibraryController{
+    
+    fileprivate func gestionPlayBar(model: JS_LocalMusic){
+        JS_LibraryController.mainTabBarController.isHidden = false
+        JS_LibraryController.mainTabBarController.playTool.localMusic = model
+    }
+    
+    
+    fileprivate func loadMuicToPlayer(){
+        var items: [String] = [String]()
+        for file in localMusics!{
+            items.append(file.filePath)
+        }
+        JS_AVPlayer.shared.musicItems = items
+    }
+}
+
+
+// MARK: - UICollectionViewDelegate
 extension JS_LibraryController: UICollectionViewDelegate{
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+       
+        guard let model = localMusics?[indexPath.row] else {return}
+        gestionPlayBar(model: model)
+       
+        JS_AVPlayer.shared.startPlay(item: URL.init(fileURLWithPath: model.filePath), index: indexPath.row, localMusics: localMusics!) { (index) in
+            guard let model = self.localMusics?[index] else {return}
+            self.gestionPlayBar(model: model)
+        }
+        if !isLoaded {
+            loadMuicToPlayer()
+        }
+        
+        NotificationCenter.default.post(name: notificationClickedMusic, object: nil)
         
     }
-    
-    
 }
 
+
+// MARK: - UICollectionViewDataSource
 extension JS_LibraryController: UICollectionViewDataSource{
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
             return localMusics?.count ?? 0
@@ -155,15 +193,19 @@ extension JS_LibraryController: UICollectionViewDataSource{
 }
 
 
+// MARK: - TopViewDelegate
 extension JS_LibraryController: TopViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath, title: String) {
+        
+        if title == "iTunes"{
+            let vc = JS_ItunesController()
+            self.navigationController?.pushViewController(vc, animated: true)
+            return
+        }
         localView.nombre = title
         self.navigationController?.pushViewController(localView, animated: true)
     }
     
 }
 
-extension JS_LibraryController: UICollectionViewDelegateFlowLayout{
-    
 
-}
