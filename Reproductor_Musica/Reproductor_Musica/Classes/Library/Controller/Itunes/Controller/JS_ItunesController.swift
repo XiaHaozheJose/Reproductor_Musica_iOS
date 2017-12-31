@@ -42,7 +42,9 @@ class JS_ItunesController: UIViewController {
         return collection
     }()
     
-    
+   fileprivate lazy var popover:JosePopover = JosePopover { (isSelected:Bool) in
+        
+    }
 
     fileprivate var artists: [MPMediaItemCollection]?{
         didSet{
@@ -52,10 +54,52 @@ class JS_ItunesController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        artists = MPMediaQuery.albums().collections
+        if authorize() {
+            print("allow Media")
+        }
         setUI()
+      
         
     }
+    
+    private func authorize()->Bool{
+        let status = MPMediaLibrary.authorizationStatus()
+        switch status {
+        case .authorized:
+            artists = MPMediaQuery.albums().collections
+            return true
+        case .notDetermined:
+            MPMediaLibrary.requestAuthorization({ (libraryStatus) in
+                _ = self.authorize()
+            })
+        default:
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Authorization For Library", message: "Click Setting ,Allow access to your media ", preferredStyle: .alert)
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+            
+            let setting = UIAlertAction(title: "Setting", style: .default, handler: { (action) in
+                let url = URL.init(string: UIApplicationOpenSettingsURLString)
+                if let url = url, UIApplication.shared.canOpenURL(url){
+                    if #available(iOS 10, *){
+                        UIApplication.shared.open(url, options: [:], completionHandler: { (success) in
+                            
+                        })
+                    }else{
+                        UIApplication.shared.openURL(url)
+                    }
+                }
+            })
+            alert.addAction(cancel)
+            alert.addAction(setting)
+            self.present(alert, animated: true, completion: nil)
+            }
+        }
+        return false
+        
+    }
+    
+    
 
 }
 
@@ -93,6 +137,7 @@ extension JS_ItunesController: UICollectionViewDataSource{
         if let items = artists {
             cell.item = items[indexPath.row].items.first
         }
+        registerForPreviewing(with: self, sourceView: cell.contentView)
         return cell
     }
 }
@@ -103,5 +148,21 @@ extension JS_ItunesController: TopViewDelegate{
         print(title)
     }
     
+    
+}
+
+extension JS_ItunesController: UIViewControllerPreviewingDelegate{
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+//        let indexPath = self.collection.indexPath(for: previewingContext.sourceView.superview as! JS_ItunesCell)
+        
+        let songsVc = JS_SongsWithAlbum()
+        return songsVc
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        viewControllerToCommit.modalPresentationStyle = .custom
+        viewControllerToCommit.transitioningDelegate = popover
+        present(viewControllerToCommit, animated: true, completion: nil)
+    }
     
 }

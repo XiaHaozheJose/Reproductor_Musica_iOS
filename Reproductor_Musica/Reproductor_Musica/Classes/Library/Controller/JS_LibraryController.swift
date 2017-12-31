@@ -78,8 +78,14 @@ class JS_LibraryController: UIViewController{
         
         self.view.backgroundColor = .white
         setCollectionView()
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        self.resignFirstResponder()
     }
     
+    deinit {
+        UIApplication.shared.endReceivingRemoteControlEvents()
+        _ = self.becomeFirstResponder()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -90,15 +96,40 @@ class JS_LibraryController: UIViewController{
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
         view.isHidden = false
     }
     override func viewDidAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         localMusics = getHistoryMusics()
     }
-    
-}
 
+
+    override func becomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    /// 状态控制
+    ///
+    /// - Parameter event:
+    override func remoteControlReceived(with event: UIEvent?) {
+        guard let event = event  else{return}
+        if event.type == UIEventType.remoteControl {
+            switch event.subtype.rawValue {
+            case UIEventSubtype.remoteControlPause.rawValue:
+                JS_AVPlayer.shared.setPause()
+            case UIEventSubtype.remoteControlPreviousTrack.rawValue:
+                JS_AVPlayer.shared.previousMusic()
+            case UIEventSubtype.remoteControlNextTrack.rawValue:
+                JS_AVPlayer.shared.nextMusic()
+            case UIEventSubtype.remoteControlPlay.rawValue:
+                JS_AVPlayer.shared.setPlay()
+            default:
+                break;
+            }
+        }
+}
+}
 
 // MARK: - UI
 extension JS_LibraryController{
@@ -107,7 +138,7 @@ extension JS_LibraryController{
         collection.contentInset.top = height + margin
         view.addSubview(collection)
         let topFrame = CGRect(x: 0, y: -( height + margin), width: collection.bounds.width, height:height)
-        topView = JS_TopView(frame: topFrame, menus: ["Local Music","iTunes","Dropbox"],withHeader: true)
+        topView = JS_TopView(frame: topFrame, menus: ["Local Music","Carpeta","iTunes","Dropbox"],withHeader: true)
         topView.delegate = self
         collection.addSubview(topView)
         topView.setTopTitle(Title: "Library", Edit: "Edit")
@@ -200,12 +231,64 @@ extension JS_LibraryController: TopViewDelegate{
         if title == "iTunes"{
             let vc = JS_ItunesController()
             self.navigationController?.pushViewController(vc, animated: true)
-            return
-        }
+        }else if title == "Carpeta"{
+            let vc = JS_CarpetaController(style: .plain)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else{
         localView.nombre = title
         self.navigationController?.pushViewController(localView, animated: true)
+        }
     }
     
+    func tableviewHeaderDidSelectes(sender: UIButton) {
+        let documentPath = "".documentDir()
+        let alert = UIAlertController(title: "NEW Directory", message: "", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            
+        }
+        alert.addAction(UIAlertAction(title: "Sure", style: .default, handler: { (action) in
+            guard let fileName = alert.textFields?.first?.text else{return}
+            if fileName == "" || !self.checkFileName(fileName){
+                self.showError()
+            }else{
+                JS_FileManager.shared.createDirectory(directoryPath: documentPath + fileName + "/")
+            }
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+ 
+    }
+}
+
+// MARK: - Regex
+extension JS_LibraryController{
+   fileprivate func checkFileName(_ string: String) -> Bool {
+        let regex = "[a-zA-Z0-9]*"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let inputString = predicate.evaluate(with: string)
+        return inputString
+    }
+    
+    fileprivate func showError(){
+        let error = UILabel(frame: CGRect(x: 0, y: kScreenHeight / 2 - 45, width: kScreenWidth, height: 30))
+        error.text = "Can not be null, o be symbol"
+        error.font = UIFont.systemFont(ofSize: 20)
+        error.textColor = .red
+        error.textAlignment = .center
+        error.alpha = 0
+        view.addSubview(error)
+        UIView.animate(withDuration: 0.5, animations: {
+            error.alpha = 1.0
+        }) { (true) in
+            UIView.animate(withDuration: 1, animations: {
+                error.alpha = 0.0
+            }, completion: { (true) in
+                error.removeFromSuperview()
+            })
+            
+        }
+    }
 }
 
 

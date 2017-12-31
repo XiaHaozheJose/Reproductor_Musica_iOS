@@ -31,7 +31,24 @@ class JS_SongsWithAlbum: UIViewController {
         return header
     }()
     
-   
+    override var previewActionItems: [UIPreviewActionItem]{
+        
+        let action1 = UIPreviewAction(title: "Play This Album", style: .destructive) { (action, previewViewController) in
+            
+        }
+        let action2 = UIPreviewAction(title: "Delete", style: .destructive) { (action, previewViewController) in
+            
+        }
+        let action3 = UIPreviewAction(title: "Add To Favorit", style: .destructive) { (action, previewViewController) in
+            //
+        }
+        let action4 = UIPreviewAction(title: "Share", style: .destructive) { (action, previewViewController) in
+            //
+        }
+        let actionItems = [action1,action2,action3,action4]
+        return actionItems
+        
+    }
     
     
     override func viewDidLoad() {

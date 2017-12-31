@@ -136,17 +136,41 @@ extension JS_LocalLetterController{
     }
     
     private func addHistoryMusics(objet: JS_LocalMusic){
-        for music in historyMusics{
-            if music.filePath == objet.filePath{
-                return
+        
+        let data = UserDefaults.standard.value(forKey: khistoryMusic) as? Data
+        
+        if let musicData = data {
+            let musicArray = NSKeyedUnarchiver.unarchiveObject(with: musicData) as? [JS_LocalMusic]
+            
+            if var musics = musicArray {
+                for music in musics{
+                    if music.filePath == objet.filePath{
+                        return
+                    }
+                }
+                musics.insert(objet, at: 0)
+                if musics.count > 10 {
+                    musics.removeLast()
+                }
+                UserDefaults.standard.setValue(NSKeyedArchiver.archivedData(withRootObject: musics), forKeyPath: khistoryMusic)
+                
             }
+        }else{
+            for music in historyMusics{
+                if music.filePath == objet.filePath{
+                    return
+                }
+            }
+            historyMusics.insert(objet, at: 0)
+            if historyMusics.count > 10 {
+                historyMusics.removeLast()
+            }
+            UserDefaults.standard.setValue(NSKeyedArchiver.archivedData(withRootObject: historyMusics), forKeyPath: khistoryMusic)
+            
         }
-
-        historyMusics.insert(objet, at: 0)
-        if historyMusics.count > 10 {
-            historyMusics.removeLast()
-        }
-        UserDefaults.standard.setValue(NSKeyedArchiver.archivedData(withRootObject: historyMusics), forKeyPath: khistoryMusic)
+        
+        
+      
     }
     
     private func loadMusicToPlayer(){
