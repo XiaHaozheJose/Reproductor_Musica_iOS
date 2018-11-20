@@ -4,7 +4,7 @@
 #### Auto play next song, fast forward and voice control, background play, etc
 ### example picture 
 !(first view)[https://github.com/XiaHaozheJose/Reproductor_Musica_iOS/blob/master/IMG_2583.png]
-!(xx)[https://github.com/XiaHaozheJose/Reproductor_Musica_iOS/blob/master/IMG_2583.png]
+### __
 !(load itunes music)[https://github.com/XiaHaozheJose/Reproductor_Musica_iOS/blob/master/IMG_2584.png]
 
 !(load artisit music)[https://github.com/XiaHaozheJose/Reproductor_Musica_iOS/blob/master/IMG_2585.png]
